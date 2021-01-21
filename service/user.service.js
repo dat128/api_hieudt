@@ -1,21 +1,24 @@
 import User from '../model/user';
 
-const registerService = (username, password) => {
-    const user = User.create({
+const registerService = async (username, password) => {
+    const user = await User.create({
         username: username,
         password: password
     })
-    return user;
+    // return {id: user.id, username: user.username};
+    return {id: user.id, username: user.username};
 }
 
-const loginService = (username, password) => {
-    const user = User.findOne({
+const loginService = async (username, password) => {
+    const user = await User.findOne({
         where: {
             username: username,
             password: password
-        }
+        },
+        attributes: ['id', 'username'],
+        raw: true
     })
-    return user;
+    return {...user};
 }
 
 export { registerService, loginService }
